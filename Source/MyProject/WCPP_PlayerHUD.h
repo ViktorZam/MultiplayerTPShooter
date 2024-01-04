@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/HorizontalBoxSlot.h"
 #include "WCPP_PlayerHUD.generated.h"
 
 /**
@@ -26,6 +27,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateHPWidgetComponent(float CurrentHP, float MaxHP);
 
+	UFUNCTION(BlueprintCallable)
+	void UpdateCrosshairAfterShoot();
+
+	//UFUNCTION(BlueprintCallable)
+	//void InitC();
+protected:
+	virtual void NativeConstruct() override;
+
+
 
 private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
@@ -37,4 +47,19 @@ private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UProgressBar* ProgressBar_HP;
 
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UImage* Image_CenterAim;
+
+	UHorizontalBoxSlot* HorizontalBoxSlotCrosshair;
+
+	const float MaxCrosshairPadding = 42;
+	const float MaxCrosshairPaddingAtMoving = 20;
+
+	FTimerHandle TimerReturnCrosshair;
+	FTimerHandle TimerIncreaseCrosshair;
+	FTimerHandle TimerCheckVelocityPawn;
+
+	void ReturnCrosshair();
+	void IncreaseCrosshairAtMoving();
+	void CheckVelocityPawn();
 };
